@@ -121,10 +121,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 var myLeads = [];
 var inputEl = document.getElementById("input-el");
 var inputBtn = document.getElementById("input-btn");
+var deleteBtn = document.querySelector("#delete-btn");
 var ulEl = document.getElementById("ul-el");
+var leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
+if (leadsFromLocalStorage) {
+  myLeads = leadsFromLocalStorage;
+  renderLeads();
+}
+deleteBtn.addEventListener("dblclick", function () {
+  localStorage.clear();
+  myLeads = [];
+  renderLeads();
+});
 inputBtn.addEventListener("click", function () {
   myLeads.push(inputEl.value);
-  inputEl.value = "";
+  inputEl.value = ""; // clears out after submitting
+
+  // save url in local storage (persistent)
+  localStorage.setItem("myLeads", JSON.stringify(myLeads));
   renderLeads();
 });
 function renderLeads() {
@@ -163,7 +177,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36155" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33951" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
